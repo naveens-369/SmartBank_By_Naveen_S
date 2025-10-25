@@ -1,5 +1,3 @@
-# smartbank_naveens
-
 A **secure banking system** built with **FastAPI**, **SQLAlchemy**, and **MySQL**. Features include:
 
 - Customer registration & login
