@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, UploadFile, File, Form, HTTPException, H
 from sqlalchemy.orm import Session
 import schemas, crud, models
 from db import get_db
-
+from auth import get_current_customer, get_current_admin
 from fastapi import status as http_status
 
 # Routers

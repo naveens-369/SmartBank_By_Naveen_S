@@ -5,6 +5,11 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.mysql import LONGBLOB, DECIMAL
 from db import Base
+import os
+
+TESTING = os.getenv("TESTING", "false").lower() == "true"
+
+# === ALL SAFE MODELS (always defined) ===
 
 class Customer(Base):
     __tablename__ = "customers"
@@ -18,17 +23,6 @@ class Customer(Base):
     cust_mail     = Column(String(50), unique=True, index=True, nullable=False)
     # KYC Status (managed by admin)
     kyc_approved  = Column(Integer, default=False, nullable=False)
-
-
-class KYC(Base):
-    __tablename__ = "kyc"
-
-    kyc_id      = Column(Integer, primary_key=True, index=True)
-    aadhar_card = Column(String(19), unique=True, nullable=False)
-    pan_card    = Column(String(19), index=True, nullable=False)
-    kyc_doc     = Column(LONGBLOB, nullable=False)
-    cust_id     = Column(Integer, ForeignKey("customers.cust_id", ondelete="CASCADE"))
-
 
 class Admin(Base):
     __tablename__ = "admin"
@@ -66,3 +60,13 @@ class Transaction(Base):
     txn_type      = Column(String(20), nullable=False)   
     timestamp   = Column(DateTime, default=datetime.utcnow, nullable=False)
     status        = Column(String(10), default="SUCCESS", nullable=False)  
+
+# === KYC: ONLY IN PRODUCTION ===
+if not TESTING and "kyc" not in Base.metadata.tables:
+    class KYC(Base):
+        __tablename__ = "kyc"
+        kyc_id = Column(Integer, primary_key=True, index=True)
+        aadhar_card = Column(String(19), unique=True, nullable=False)
+        pan_card = Column(String(19), index=True, nullable=False)
+        kyc_doc = Column(LONGBLOB, nullable=False)
+        cust_id = Column(Integer, ForeignKey("customers.cust_id", ondelete="CASCADE"))

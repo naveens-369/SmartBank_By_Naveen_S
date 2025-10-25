@@ -2,7 +2,8 @@
 from sqlalchemy.orm import Session
 import models, schemas
 from fastapi import HTTPException, status
-
+# crud.py (only changed parts)
+from auth import verify_password, get_password_hash, create_access_token
 import random, string
 from datetime import date, datetime, timedelta
 from decimal import Decimal
@@ -11,31 +12,41 @@ from sqlalchemy import func, and_
 # Customer
 # register
 def cust_register(db: Session, user: schemas.Register):
-    # check customer email already exists
     if db.query(models.Customer).filter(models.Customer.cust_mail == user.email).first():
         raise HTTPException(status_code=400, detail="Email already registered")
+    if db.query(models.Customer).filter(models.Customer.cust_phoneno == user.phoneno).first():
+        raise HTTPException(status_code=400, detail="Phone already registered")
 
-    new_cust = models.Customer(
+    hashed_password = get_password_hash(user.password)
+    db_user = models.Customer(
         cust_name=user.name,
-        cust_mail=user.email,
-        cust_password=user.password,  
         cust_phoneno=user.phoneno,
-        cust_address=user.address,
         cust_age=user.age,
-        kyc_approved=False
+        cust_address=user.address,
+        cust_mail=user.email,
+        cust_password=hashed_password,
+        kyc_approved=0
     )
-    db.add(new_cust)
+    db.add(db_user)
     db.commit()
-    db.refresh(new_cust)
+    db.refresh(db_user)
     return {"message": "Registered Successfully"}
 
 # login
 def cust_login(db: Session, login: schemas.Login):
     # check customer email already exists
     user = db.query(models.Customer).filter(models.Customer.cust_mail == login.email).first()
+    if user and user.cust_password != login.password:
+        raise HTTPException(status_code=401, detail="Incorrect password")
     if not user or user.cust_password != login.password:
         raise HTTPException(status_code=401, detail="Invalid credentials")
-    return {"message": f"Welcome {user.cust_name}!", "cust_id": user.cust_id}
+    access_token = create_access_token(data={"sub": user.cust_id, "name": user.cust_name, "role": "customer"})
+    return {
+        "message": f"Welcome {user.cust_name}!",
+        "cust_id": user.cust_id,
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
 
 # upload kyc
 def upload_kyc(db: Session, cust_id: int, aadhar: str, pan: str, kyc_doc):
@@ -81,9 +92,17 @@ def admin_register(db: Session, admin: schemas.AdminRegister):
 def admin_login(db: Session, login: schemas.AdminLogin):
     # check customer email already exists
     admin = db.query(models.Admin).filter(models.Admin.admin_email == login.email).first()
+    if admin and admin.admin_password != login.password:
+        raise HTTPException(status_code=401, detail="Invalid admin credentials")
     if not admin or admin.admin_password != login.password:
         raise HTTPException(status_code=401, detail="Invalid admin credentials")
-    return {"message": f"Welcome Admin {admin.admin_name}!", "admin_id": admin.admin_id}
+    access_token = create_access_token(data={"sub": admin.admin_id, "role": "admin"})
+    return {
+        "message": f"Welcome {admin.admin_name}!",
+        "admin_id": admin.admin_id,
+        "access_token": access_token,
+        "token_type": "bearer"
+    }
 
 # manage customer details
 def get_all_customers(db: Session):
