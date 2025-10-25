@@ -1,4 +1,4 @@
-A **secure banking system** built with **Python**, **FastAPI**, **SQLAlchemy**, and **MySQL**. Features include:
+A **Smart Bank** built with **Python**, **FastAPI**, **SQLAlchemy**, and **MySQL**. Features include:
 
 - Customer registration & login
 - KYC upload & admin approval
