@@ -14,7 +14,7 @@ A **Smart Bank** built with **Python**, **FastAPI**, **SQLAlchemy**, and **MySQL
 |-------|-----------|
 | **Customer Auth** | Register, Login |
 | **KYC Verification** | Upload Aadhaar, PAN, Document |
-| **Account Management** | Open Savings/Current/FD accounts |
+| **Account Management** | Open Savings(with minimum ₹500)/Current(with minimum ₹1000)/FD accounts(with minimum ₹5000) |
 | **Money Transfer** | Secure transfers with ₹50,000 daily limit |
 | **Admin Panel** | View customers, approve/reject KYC |
 | **Transaction Logging** | Full audit trail (success + failed attempts) |
