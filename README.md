@@ -31,4 +31,12 @@ A **secure banking system** built with **Python**, **FastAPI**, **SQLAlchemy**, 
 
 ---
 
-## Project Structure
+## Steps :-
+- Clone the code into the VS code by clicking Clone Git Repository and paste web URL.
+- Create a **.env** file containing Database host, Database port, Database name(Here I should smart_bank), Database Password and Database User
+- Install packages
+    - **pip install pydantic**
+    - **pip install pymysql sqlalchemy mysql-connector-python databases dotenv**
+    - **pip install fastapi uvicorn**
+- Run **uvicorn main:app --reload** and Open **http://127.0.0.1:8000/docs**
+ 
