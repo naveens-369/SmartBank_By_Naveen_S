@@ -31,7 +31,7 @@ A **secure banking system** built with **Python**, **FastAPI**, **SQLAlchemy**, 
 
 ---
 
-## Steps :-
+## Steps
 - Clone the code into the VS code by clicking Clone Git Repository and paste web URL.
 - Create a **.env** file containing Database host, Database port, Database name(Here I should smart_bank), Database Password and Database User
 - Install packages
