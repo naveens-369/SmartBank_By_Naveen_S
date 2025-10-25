@@ -1,7 +1,36 @@
 # smartbank_naveens
 
-Create a database in mysql called "smart_bank"
-In that database, create a table called "customers" to store customer details, kyc details and whatever required
-Install pymysql, sqlalchemy to connect the python file to the sql 
-Store database details like hostname, user, databasename, password and port number in .env file.
+A **secure banking system** built with **FastAPI**, **SQLAlchemy**, and **MySQL**. Features include:
 
+- Customer registration & login
+- KYC upload & admin approval
+- Account creation (Savings, Current, FD)
+- Secure money transfer with daily limits
+- Admin panel for customer & KYC management
+
+---
+
+## Features
+
+| Feature | Description |
+|-------|-----------|
+| **Customer Auth** | Register, Login |
+| **KYC Verification** | Upload Aadhaar, PAN, Document |
+| **Account Management** | Open Savings/Current/FD accounts |
+| **Money Transfer** | Secure transfers with ₹50,000 daily limit |
+| **Admin Panel** | View customers, approve/reject KYC |
+| **Transaction Logging** | Full audit trail (success + failed attempts) |
+
+---
+
+## Tech Stack
+
+- **FastAPI** – API Framework
+- **SQLAlchemy** – ORM
+- **MySQL** – Database
+- **Pydantic** – Data Validation
+- **Python 3.9+**
+
+---
+
+## Project Structure
