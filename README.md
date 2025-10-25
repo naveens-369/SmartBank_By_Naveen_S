@@ -33,7 +33,7 @@ A **Smart Bank** built with **Python**, **FastAPI**, **SQLAlchemy**, and **MySQL
 
 ## Steps
 - Clone the code into the VS code by clicking Clone Git Repository and paste web URL.
-- Create a **.env** file containing Database host, Database port, Database name(Here I should smart_bank), Database Password and Database User
+- Create a **.env** file containing Database host, Database port, Database name(Here I used smart_bank), Database Password and Database User
 - Install packages
     - **pip install pydantic**
     - **pip install pymysql sqlalchemy mysql-connector-python databases dotenv**
